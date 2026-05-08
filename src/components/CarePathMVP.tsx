@@ -1591,24 +1591,26 @@ export default function CarePathMVP() {
   );
 
   return (
-    <div className="w-full max-w-md mx-auto h-[800px] bg-white rounded-[48px] shadow-2xl overflow-hidden border-[8px] border-slate-900 relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-2xl z-50" />
-      
-      <AnimatePresence mode="wait">
-        {currentScreen === 'onboarding' && renderOnboarding()}
-        {currentScreen === 'login' && renderLogin()}
-        {currentScreen === 'dashboard' && renderDashboard()}
-        {currentScreen === 'medications' && renderMedications()}
-        {currentScreen === 'medication-detail' && renderMedicationDetail()}
-        {currentScreen === 'vitals' && renderVitals()}
-        {currentScreen === 'vitals-success' && renderVitalsSuccess()}
-        {currentScreen === 'ai-report' && renderAIReport()}
-        {currentScreen === 'diet-routine' && renderDietRoutine()}
-        {currentScreen === 'chatbot' && renderChatbot()}
-        {currentScreen === 'pharmacy' && renderPharmacy()}
-        {currentScreen === 'notifications' && renderNotifications()}
-        {currentScreen === 'couple-counselor' && renderCoupleCounselor()}
-      </AnimatePresence>
+    <div className="w-full flex justify-center items-center py-4 lg:py-10">
+      <div className="w-full max-w-md h-[700px] sm:h-[800px] bg-white rounded-[2rem] sm:rounded-[48px] shadow-2xl overflow-hidden border-[4px] sm:border-[8px] border-slate-900 relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-32 h-4 sm:h-6 bg-slate-900 rounded-b-2xl z-50" />
+        
+        <AnimatePresence mode="wait">
+          {currentScreen === 'onboarding' && renderOnboarding()}
+          {currentScreen === 'login' && renderLogin()}
+          {currentScreen === 'dashboard' && renderDashboard()}
+          {currentScreen === 'medications' && renderMedications()}
+          {currentScreen === 'medication-detail' && renderMedicationDetail()}
+          {currentScreen === 'vitals' && renderVitals()}
+          {currentScreen === 'vitals-success' && renderVitalsSuccess()}
+          {currentScreen === 'ai-report' && renderAIReport()}
+          {currentScreen === 'diet-routine' && renderDietRoutine()}
+          {currentScreen === 'chatbot' && renderChatbot()}
+          {currentScreen === 'pharmacy' && renderPharmacy()}
+          {currentScreen === 'notifications' && renderNotifications()}
+          {currentScreen === 'couple-counselor' && renderCoupleCounselor()}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
