@@ -90,26 +90,13 @@ const RISK_COLORS = ['#ef4444', '#f59e0b', '#10b981'];
 export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'proposal' | 'mvp' | 'gamified-mvp' | 'family-mvp' | 'gamified-awareness-mvp' | 'solution-report'>('dashboard');
   const [selectedClient, setSelectedClient] = useState<ClientConfig>(MOCK_CLIENT_CONFIGS['GlobalTech Solutions']);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isAIChatOpen, setIsAIChatOpen] = useState(false);
   const [showCaseDetails, setShowCaseDetails] = useState(false);
   const [activeView, setActiveView] = useState<'overview' | 'climate'>('overview');
   const [showRiskOverlay, setShowRiskOverlay] = useState(false);
   const [timeRange, setTimeRange] = useState<'day' | 'month' | 'year'>('month');
   const [comparisonType, setComparisonType] = useState<'region' | 'department'>('region');
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleExport = () => {
     const data = JSON.stringify({
@@ -154,26 +141,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-900 overflow-hidden relative">
-      {/* Mobile Sidebar Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 lg:hidden"
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Sidebar - Desktop & Mobile Drawer */}
+    <div className="flex h-screen bg-slate-50 font-sans text-slate-900 overflow-hidden">
+      {/* Sidebar */}
       <aside 
         className={cn(
-          "bg-white border-r border-slate-200 transition-all duration-300 flex flex-col fixed inset-y-0 left-0 z-50 lg:relative lg:translate-x-0",
-          isSidebarOpen ? "w-64" : "w-20",
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          "bg-white border-r border-slate-200 transition-all duration-300 flex flex-col",
+          isSidebarOpen ? "w-64" : "w-20"
         )}
       >
         <div className="p-6 flex items-center gap-3 border-b border-slate-100">
@@ -183,59 +156,56 @@ export default function App() {
           {isSidebarOpen && <span className="font-bold text-xl tracking-tight">Habit Intelligence</span>}
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-2">
           <button 
-            onClick={() => { setActiveTab('dashboard'); setIsMobileMenuOpen(false); }}
+            onClick={() => setActiveTab('dashboard')}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
-              activeTab === 'dashboard' ? "bg-indigo-50 text-indigo-700 font-bold" : "text-slate-600 hover:bg-slate-50"
+              activeTab === 'dashboard' ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
             )}
           >
             <LayoutDashboard size={20} />
-            {(isSidebarOpen || isMobileMenuOpen) && <span>Dashboard</span>}
+            {isSidebarOpen && <span>Dashboard</span>}
           </button>
           <button 
-            onClick={() => { setActiveTab('proposal'); setIsMobileMenuOpen(false); }}
+            onClick={() => setActiveTab('proposal')}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
-              activeTab === 'proposal' ? "bg-indigo-50 text-indigo-700 font-bold" : "text-slate-600 hover:bg-slate-50"
+              activeTab === 'proposal' ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
             )}
           >
             <FileText size={20} />
-            {(isSidebarOpen || isMobileMenuOpen) && <span>Part 2: Data Products</span>}
+            {isSidebarOpen && <span>Part 2: Data Products</span>}
           </button>
-          <div className="pt-4 pb-2">
-            <span className={cn("text-[10px] uppercase font-black text-slate-400 tracking-widest px-3", !(isSidebarOpen || isMobileMenuOpen) && "invisible")}>MVPs</span>
-          </div>
           <button 
-            onClick={() => { setActiveTab('mvp'); setIsMobileMenuOpen(false); }}
+            onClick={() => setActiveTab('mvp')}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
-              activeTab === 'mvp' ? "bg-indigo-50 text-indigo-700 font-bold" : "text-slate-600 hover:bg-slate-50"
+              activeTab === 'mvp' ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
             )}
           >
             <Smartphone size={20} />
-            {(isSidebarOpen || isMobileMenuOpen) && <span>CarePath MVP</span>}
+            {isSidebarOpen && <span>CarePath MVP</span>}
           </button>
           <button 
-            onClick={() => { setActiveTab('gamified-awareness-mvp'); setIsMobileMenuOpen(false); }}
+            onClick={() => setActiveTab('gamified-awareness-mvp')}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
-              activeTab === 'gamified-awareness-mvp' ? "bg-indigo-50 text-indigo-700 font-bold" : "text-slate-600 hover:bg-slate-50"
+              activeTab === 'gamified-awareness-mvp' ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
             )}
           >
             <Trophy size={20} />
-            {(isSidebarOpen || isMobileMenuOpen) && <span>Awareness MVP</span>}
+            {isSidebarOpen && <span>Awareness MVP</span>}
           </button>
           <button 
-            onClick={() => { setActiveTab('solution-report'); setIsMobileMenuOpen(false); }}
+            onClick={() => setActiveTab('solution-report')}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
-              activeTab === 'solution-report' ? "bg-indigo-50 text-indigo-700 font-bold" : "text-slate-600 hover:bg-slate-50"
+              activeTab === 'solution-report' ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
             )}
           >
             <FileText size={20} />
-            {(isSidebarOpen || isMobileMenuOpen) && <span>Solution Report</span>}
+            {isSidebarOpen && <span>Solution Report</span>}
           </button>
         </nav>
 
@@ -258,55 +228,39 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shrink-0">
-          <div className="flex items-center gap-2 lg:gap-4">
-            <button 
-              onClick={() => setIsMobileMenuOpen(true)} 
-              className="p-2 hover:bg-slate-100 rounded-lg lg:hidden"
-            >
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-100 rounded-lg">
               <Menu size={20} />
             </button>
-            <button 
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
-              className="hidden lg:p-2 lg:hover:bg-slate-100 lg:rounded-lg lg:block"
-            >
-              <Menu size={20} />
-            </button>
-            <h1 className="text-sm lg:text-lg font-bold text-slate-800 truncate max-w-[150px] lg:max-w-none">
-              {activeTab === 'dashboard' ? (
-                <span className="flex items-center gap-2">
-                  <span className="hidden sm:inline">{selectedClient.name}</span>
-                  <span className="sm:hidden truncate">{selectedClient.name.split(' ')[0]}</span>
-                </span>
-              ) : activeTab === 'proposal' ? 'Data Products' : activeTab === 'solution-report' ? 'Report' : 'MVP Preview'}
+            <h1 className="text-lg font-semibold text-slate-800">
+              {activeTab === 'dashboard' ? `${selectedClient.name} Health Insights` : 'Part 2: Data Product Proposals'}
             </h1>
           </div>
-          <div className="flex items-center gap-2 lg:gap-4">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-[10px] lg:text-xs font-medium">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-medium">
               <Activity size={14} />
-              {selectedClient.employeeCount.toLocaleString()} 
-              <span className="hidden lg:inline ml-1">Employees</span>
+              {selectedClient.employeeCount.toLocaleString()} Employees
             </div>
             <button 
               onClick={handleExport}
-              className="hidden xl:flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
             >
               <Download size={18} />
               Export
             </button>
             <button 
               onClick={() => setIsAIChatOpen(true)}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-all shadow-sm"
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm"
             >
-              <BrainCircuit size={18} className="shrink-0" />
-              <span className="hidden sm:inline">Ask AI Assistant</span>
-              <span className="sm:hidden">AI</span>
+              <BrainCircuit size={18} />
+              Ask AI Assistant
             </button>
           </div>
         </header>
 
         {/* Scrollable Area */}
-        <div className="flex-1 overflow-y-auto p-4 lg:p-8 space-y-8">
+        <div className="flex-1 overflow-y-auto p-8 space-y-8">
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && (
               <motion.div 
@@ -317,13 +271,13 @@ export default function App() {
                 className="space-y-8"
               >
                 {/* ROI Tracker - Full Width Horizontal Section */}
-                <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                       <h3 className="text-xl font-bold text-slate-800">ROI Tracker</h3>
                       <p className="text-slate-500 text-xs italic">"Preventive care is 4.7x more cost-effective than hospitalization."</p>
                     </div>
-                    <div className="flex items-center justify-between md:justify-end gap-4">
+                    <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">Net Savings</div>
                         <div className="text-2xl font-bold text-indigo-600">₹45L</div>
@@ -334,18 +288,18 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-center">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                     {/* Chart Column */}
                     <div className="lg:col-span-3 flex flex-col items-center justify-center">
-                      <div className="h-48 w-48 sm:h-56 sm:w-56 lg:h-48 lg:w-48 relative">
+                      <div className="h-48 w-48 relative">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie
                               data={MOCK_ROI_BREAKDOWN}
                               cx="50%"
                               cy="50%"
-                              innerRadius={window.innerWidth < 640 ? 60 : 70}
-                              outerRadius={window.innerWidth < 640 ? 80 : 90}
+                              innerRadius={60}
+                              outerRadius={80}
                               paddingAngle={5}
                               dataKey="value"
                             >
@@ -359,18 +313,18 @@ export default function App() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Total ROI</span>
-                          <span className="text-xl font-bold text-slate-800">₹45L</span>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase">Total ROI</span>
+                          <span className="text-lg font-bold text-slate-800">₹45L</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Legend Column */}
-                    <div className="md:col-span-1 lg:col-span-4 grid grid-cols-1 gap-3">
+                    <div className="lg:col-span-4 flex flex-col gap-4">
                       {MOCK_ROI_BREAKDOWN.map((item) => (
-                        <div key={item.name} className="flex items-center justify-between gap-4 p-3 rounded-2xl bg-slate-50 border border-slate-100/50 hover:border-slate-200 transition-colors group">
+                        <div key={item.name} className="flex items-center justify-between gap-4 p-3 rounded-2xl bg-slate-50 border border-slate-100/50 hover:border-slate-200 transition-colors">
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-2 h-2 lg:w-3 lg:h-3 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
+                            <div className="w-3 h-3 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: item.color }} />
                             <span className="text-xs font-semibold text-slate-700 truncate">{item.name}</span>
                           </div>
                           <span className="text-sm font-bold text-slate-900 shrink-0">₹{(item.value / 100000).toFixed(1)}L</span>
@@ -379,29 +333,20 @@ export default function App() {
                     </div>
 
                     {/* Insights Column */}
-                    <div className="md:col-span-2 lg:col-span-5">
-                      <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100 h-full flex flex-col justify-center">
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div className="lg:col-span-5">
+                      <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
-                              <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Problem</span>
-                            </div>
-                            <p className="text-xs text-slate-600 leading-relaxed font-medium text-pretty">₹57L potential liability from unmanaged chronic risks.</p>
+                            <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Problem</span>
+                            <p className="text-[11px] text-slate-600 leading-tight">₹57L potential liability from unmanaged chronic risks.</p>
                           </div>
                           <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <div className="w-1.5 h-1.5 rounded-full bg-amber-600" />
-                              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">Reason</span>
-                            </div>
-                            <p className="text-xs text-slate-600 leading-relaxed font-medium text-pretty">Low screening adherence in South (22%).</p>
+                            <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">Reason</span>
+                            <p className="text-[11px] text-slate-600 leading-tight">Low screening adherence in South region (22%).</p>
                           </div>
                           <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Solution</span>
-                            </div>
-                            <p className="text-xs text-slate-800 font-bold leading-relaxed text-pretty">Allocate ₹5L for camps to save ₹20L.</p>
+                            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Solution</span>
+                            <p className="text-[11px] text-slate-800 font-bold leading-tight">Allocate ₹5L for on-site camps to save ₹20L.</p>
                           </div>
                         </div>
                       </div>
@@ -415,14 +360,14 @@ export default function App() {
                     {/* Environmental Impact Score & Executive Summary */}
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Environmental Impact Score Widget */}
-                    <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-base lg:text-lg font-bold flex items-center gap-2 truncate">
-                          <Leaf size={20} className="text-emerald-600 shrink-0" />
-                          <span className="truncate">Env. Score</span>
+                    <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                          <Leaf size={20} className="text-emerald-600" />
+                          Env. Score
                         </h3>
                         <div className={cn(
-                          "px-2 py-1 rounded text-[8px] lg:text-[10px] font-bold uppercase shrink-0",
+                          "px-2 py-1 rounded text-[10px] font-bold uppercase",
                           MOCK_ENVIRONMENTAL_IMPACT.status === 'excellent' ? "bg-emerald-100 text-emerald-700" :
                           MOCK_ENVIRONMENTAL_IMPACT.status === 'fair' ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"
                         )}>
@@ -482,26 +427,26 @@ export default function App() {
                     </div>
 
                     {/* Executive Summary & Risk Stratification */}
-                    <div className="lg:col-span-3 bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                    <div className="lg:col-span-3 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                          <h3 className="text-lg lg:text-xl font-bold text-slate-800">Risk Stratification</h3>
-                          <p className="text-xs lg:text-sm text-slate-500">Executive population health summary</p>
+                          <h3 className="text-xl font-bold text-slate-800">Workforce Health Risk Stratification</h3>
+                          <p className="text-sm text-slate-500">Executive summary of population health status</p>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                          <div className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-400">
+                          <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-red-500" /> High
                           </div>
-                          <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 rounded-full bg-amber-500" /> Mod
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-amber-500" /> Moderate
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-emerald-500" /> Low
                           </div>
                         </div>
                       </div>
                     
-                    <div className="h-48 lg:h-64 flex items-center justify-center">
+                    <div className="h-64 flex items-center justify-center">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[
                           { name: 'Population', high: MOCK_RISK_STRATIFICATION.high, moderate: MOCK_RISK_STRATIFICATION.moderate, low: MOCK_RISK_STRATIFICATION.low }
@@ -533,18 +478,18 @@ export default function App() {
                       </ResponsiveContainer>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 lg:gap-4 pt-4 border-t border-slate-50">
+                    <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-50">
                       <div className="text-center">
-                        <div className="text-lg lg:text-2xl font-bold text-red-600">{MOCK_RISK_STRATIFICATION.high}%</div>
-                        <div className="text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase leading-tight">Critical</div>
+                        <div className="text-2xl font-bold text-red-600">{MOCK_RISK_STRATIFICATION.high}%</div>
+                        <div className="text-[10px] font-bold text-slate-400 uppercase">Critical Intervention</div>
                       </div>
                       <div className="text-center border-x border-slate-100">
-                        <div className="text-lg lg:text-2xl font-bold text-amber-600">{MOCK_RISK_STRATIFICATION.moderate}%</div>
-                        <div className="text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase leading-tight">Preventive</div>
+                        <div className="text-2xl font-bold text-amber-600">{MOCK_RISK_STRATIFICATION.moderate}%</div>
+                        <div className="text-[10px] font-bold text-slate-400 uppercase">Preventive Focus</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-lg lg:text-2xl font-bold text-emerald-600">{MOCK_RISK_STRATIFICATION.low}%</div>
-                        <div className="text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase leading-tight">Wellness</div>
+                        <div className="text-2xl font-bold text-emerald-600">{MOCK_RISK_STRATIFICATION.low}%</div>
+                        <div className="text-[10px] font-bold text-slate-400 uppercase">Maintain Wellness</div>
                       </div>
                     </div>
                   </div>
@@ -608,16 +553,16 @@ export default function App() {
 
                   {/* Wellness App Engagement (Reactive) */}
                   {selectedClient.hasApp && (
-                    <div className="lg:col-span-2 bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-                      <div className="flex items-center justify-between gap-4">
-                        <h3 className="text-base lg:text-lg font-bold flex items-center gap-2 truncate">
-                          <Smartphone size={20} className="text-pink-600 shrink-0" />
-                          <span className="truncate">App Engagement</span>
+                    <div className="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                          <Smartphone size={20} className="text-pink-600" />
+                          Wellness App Engagement
                         </h3>
-                        <div className="px-2 py-1 bg-pink-50 text-pink-600 rounded-full text-[8px] lg:text-[10px] font-bold uppercase shrink-0">Active Users</div>
+                        <div className="px-3 py-1 bg-pink-50 text-pink-600 rounded-full text-[10px] font-bold uppercase">Step Tracking & Activity</div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="h-48 md:col-span-2">
+                        <div className="h-48 col-span-2">
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={[
                               { day: 'Mon', steps: 6200 },
@@ -636,14 +581,14 @@ export default function App() {
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
-                        <div className="flex flex-row md:flex-col justify-center gap-4">
-                          <div className="flex-1 bg-pink-50 p-4 rounded-2xl">
-                            <div className="text-lg lg:text-2xl font-bold text-pink-600">6,850</div>
-                            <div className="text-[8px] lg:text-[10px] font-bold text-pink-400 uppercase">Avg Steps</div>
+                        <div className="flex flex-col justify-center space-y-4">
+                          <div className="bg-pink-50 p-4 rounded-2xl">
+                            <div className="text-2xl font-bold text-pink-600">6,850</div>
+                            <div className="text-[10px] font-bold text-pink-400 uppercase">Avg Daily Steps</div>
                           </div>
-                          <div className="flex-1 bg-slate-50 p-4 rounded-2xl">
-                            <div className="text-lg lg:text-2xl font-bold text-slate-700">72%</div>
-                            <div className="text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase">Active</div>
+                          <div className="bg-slate-50 p-4 rounded-2xl">
+                            <div className="text-2xl font-bold text-slate-700">72%</div>
+                            <div className="text-[10px] font-bold text-slate-400 uppercase">Active Users</div>
                           </div>
                         </div>
                       </div>
@@ -652,19 +597,19 @@ export default function App() {
                 </div>
 
                 {/* Historical Trends & Improvement Analysis */}
-                <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-lg lg:text-xl font-bold text-slate-800">Historical Health Trends</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">Comparative employee and family health metrics</p>
+                      <h3 className="text-xl font-bold text-slate-800">Historical Health Trends</h3>
+                      <p className="text-sm text-slate-500">Comparative analysis of employee and family health metrics</p>
                     </div>
-                    <div className="flex bg-slate-100 p-1 rounded-xl w-fit">
+                    <div className="flex bg-slate-100 p-1 rounded-xl">
                       {(['day', 'month', 'year'] as const).map((range) => (
                         <button
                           key={range}
                           onClick={() => setTimeRange(range)}
                           className={cn(
-                            "px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg text-[10px] lg:text-xs font-bold transition-all uppercase",
+                            "px-4 py-2 rounded-lg text-xs font-bold transition-all uppercase",
                             timeRange === range ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
                           )}
                         >
@@ -675,7 +620,7 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 h-64 lg:h-80">
+                    <div className="lg:col-span-2 h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={MOCK_HISTORICAL_TRENDS[timeRange]}>
                           <defs>
@@ -750,63 +695,63 @@ export default function App() {
                 </div>
 
                 {/* High-Impact Case Management (Executive View) */}
-                <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg lg:text-xl font-bold text-slate-800">Case Management</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">Tracking critical events and insurance</p>
+                      <h3 className="text-xl font-bold text-slate-800">High-Impact Case Management</h3>
+                      <p className="text-sm text-slate-500">Tracking critical health events and insurance status</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1.5 text-[8px] lg:text-[10px] font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full uppercase">
-                        <AlertTriangle size={12} className="shrink-0" />
-                        {MOCK_INSURANCE_METRICS.uncoveredCount} Uninsured
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full">
+                        <AlertTriangle size={12} />
+                        {MOCK_INSURANCE_METRICS.uncoveredCount} Uninsured Flags
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 gap-4">
                     {MOCK_CASES.slice(0, 3).map((record) => (
-                      <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 lg:p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all group">
-                        <div className="flex items-center gap-3 lg:gap-4 mb-4 md:mb-0">
+                      <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all group">
+                        <div className="flex items-center gap-4 mb-4 md:mb-0">
                           <div className={cn(
-                            "w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center shrink-0",
+                            "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
                             record.status === 'critical' ? "bg-rose-100 text-rose-600" : "bg-indigo-100 text-indigo-600"
                           )}>
-                            <Stethoscope size={20} className="lg:size-6" />
+                            <Stethoscope size={24} />
                           </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-bold text-slate-900 text-sm lg:text-base truncate">{record.procedure}</span>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-slate-900">{record.procedure}</span>
                               <span className={cn(
-                                "text-[8px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded uppercase",
+                                "text-[10px] font-bold px-2 py-0.5 rounded uppercase",
                                 record.status === 'critical' ? "bg-rose-500 text-white" : "bg-indigo-500 text-white"
                               )}>
                                 {record.status}
                               </span>
                             </div>
-                            <div className="text-[10px] lg:text-xs text-slate-500 mt-0.5 truncate">
+                            <div className="text-xs text-slate-500 mt-0.5">
                               {record.id} • {record.gender} • {record.region}
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between md:justify-end gap-4 lg:gap-8 border-t border-slate-100 md:border-none pt-4 md:pt-0">
-                          <div className="text-left md:text-right">
+                        <div className="flex items-center gap-8">
+                          <div className="text-right hidden md:block">
                             <div className="text-sm font-bold text-slate-900">₹{record.totalBill.toLocaleString()}</div>
-                            <div className="text-[8px] lg:text-[10px] text-slate-400 uppercase font-bold">Total Bill</div>
+                            <div className="text-[10px] text-slate-400 uppercase font-bold">Total Bill</div>
                           </div>
                           
-                          <div className="flex items-center gap-2 lg:gap-3">
+                          <div className="flex items-center gap-3">
                             {!record.hasInsurance && (
-                              <div className="px-2 lg:px-3 py-1 lg:py-1.5 bg-rose-600 text-white text-[8px] lg:text-[10px] font-bold rounded-lg shadow-lg shadow-rose-200 animate-pulse">
-                                UNINSURED
+                              <div className="px-3 py-1.5 bg-rose-600 text-white text-[10px] font-bold rounded-lg shadow-lg shadow-rose-200 animate-pulse">
+                                UNINSURED FLAG
                               </div>
                             )}
-                            <button className="p-2 lg:p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm">
-                              <FileText size={16} className="lg:size-[18px]" />
+                            <button className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm">
+                              <FileText size={18} />
                             </button>
-                            <button className="p-2 lg:p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-100 transition-all shadow-sm">
-                              <ChevronRight size={16} className="lg:size-[18px]" />
+                            <button className="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-100 transition-all shadow-sm">
+                              <ChevronRight size={18} />
                             </button>
                           </div>
                         </div>
@@ -814,25 +759,25 @@ export default function App() {
                     ))}
                   </div>
 
-                  <button className="w-full py-3 lg:py-4 text-xs lg:text-sm font-bold text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl border border-dashed border-slate-200 hover:border-indigo-200 transition-all">
+                  <button className="w-full py-4 text-sm font-bold text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl border border-dashed border-slate-200 hover:border-indigo-200 transition-all">
                     View All Active Cases ({MOCK_CASES.length})
                   </button>
                 </div>
 
                 {/* OPD & IPD Analytics */}
-                <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                      <h3 className="text-lg lg:text-xl font-bold text-slate-800">OPD & IPD Analytics</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">Outpatient and inpatient department utilization</p>
+                      <h3 className="text-xl font-bold text-slate-800">OPD & IPD Analytics</h3>
+                      <p className="text-sm text-slate-500">Real-time tracking of outpatient and inpatient department utilization</p>
                     </div>
-                    <div className="flex bg-slate-100 p-1 rounded-xl w-fit">
+                    <div className="flex bg-slate-100 p-1 rounded-xl">
                       {(['day', 'month', 'year'] as const).map((range) => (
                         <button
                           key={range}
                           onClick={() => setTimeRange(range)}
                           className={cn(
-                            "px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg text-[10px] lg:text-xs font-bold transition-all uppercase",
+                            "px-4 py-2 rounded-lg text-xs font-bold transition-all uppercase",
                             timeRange === range ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
                           )}
                         >
@@ -843,7 +788,7 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 h-64 lg:h-80">
+                    <div className="lg:col-span-2 h-80">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={MOCK_OPD_IPD_TRENDS[timeRange]}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -860,38 +805,38 @@ export default function App() {
                     </div>
 
                     <div className="space-y-6">
-                      <div className="p-4 lg:p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4 text-center md:text-left">Cost Efficiency Insights</h4>
-                        <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
+                      <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Cost Efficiency Insights</h4>
+                        <div className="space-y-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                              <span className="text-[10px] lg:text-xs text-slate-600">Avg. OPD Cost</span>
+                              <span className="text-xs text-slate-600">Avg. OPD Cost</span>
                             </div>
-                            <span className="text-xs lg:text-sm font-bold text-slate-900">₹{MOCK_OPD_IPD_TRENDS[timeRange][0].avgCostPerOpd}</span>
+                            <span className="text-sm font-bold text-slate-900">₹{MOCK_OPD_IPD_TRENDS[timeRange][0].avgCostPerOpd}</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 rounded-full bg-pink-500" />
-                              <span className="text-[10px] lg:text-xs text-slate-600">Avg. IPD Cost</span>
+                              <span className="text-xs text-slate-600">Avg. IPD Cost</span>
                             </div>
-                            <span className="text-xs lg:text-sm font-bold text-slate-900">₹{MOCK_OPD_IPD_TRENDS[timeRange][0].avgCostPerIpd}</span>
+                            <span className="text-sm font-bold text-slate-900">₹{MOCK_OPD_IPD_TRENDS[timeRange][0].avgCostPerIpd}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="p-4 lg:p-6 bg-indigo-50 rounded-2xl border border-indigo-100 flex flex-col sm:flex-row items-start gap-3 lg:gap-4">
-                        <div className="p-2 bg-indigo-600 text-white rounded-xl shrink-0 mx-auto sm:mx-0">
+                      <div className="p-6 bg-indigo-50 rounded-2xl border border-indigo-100 flex items-start gap-4">
+                        <div className="p-2 bg-indigo-600 text-white rounded-xl">
                           <Brain size={20} />
                         </div>
-                        <div className="text-center sm:text-left">
-                          <h4 className="text-xs lg:text-sm font-bold text-indigo-900 mb-1">AI Utilization Insight</h4>
-                          <p className="text-[10px] lg:text-xs text-indigo-700 leading-relaxed">
+                        <div>
+                          <h4 className="text-sm font-bold text-indigo-900 mb-1">AI Utilization Insight</h4>
+                          <p className="text-xs text-indigo-700 leading-relaxed">
                             {timeRange === 'day' ? 
-                              "Peak OPD hours detected between 10:00 AM - 2:00 PM. Suggesting staggered appointment slots." :
+                              "Peak OPD hours detected between 10:00 AM - 2:00 PM. Suggesting staggered appointment slots to reduce wait times." :
                               timeRange === 'month' ?
-                              "IPD admissions spiked in Week 3, correlating with the recent flu outbreak." :
-                              "Annual data shows a 15% shift from IPD to OPD, resulting in a projected saving of ₹18L."
+                              "IPD admissions spiked in Week 3, correlating with the recent flu outbreak. OHC inventory has been auto-replenished." :
+                              "Annual data shows a 15% shift from IPD to OPD for minor procedures, resulting in a projected saving of ₹18L."
                             }
                           </p>
                         </div>
@@ -901,52 +846,53 @@ export default function App() {
                 </div>
 
                 {/* Regional Health & Environment (Climate-Informed Surveillance) */}
-                <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg lg:text-xl font-bold text-slate-800">Regional Health & Environment</h3>
-                      <p className="text-xs lg:text-sm text-slate-500">Location surveillance across offices</p>
+                      <h3 className="text-xl font-bold text-slate-800">Regional Health & Environment</h3>
+                      <p className="text-sm text-slate-500">Climate-informed surveillance across major office locations</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live Env Sync</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live Environmental Sync</span>
                     </div>
                   </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {MOCK_OFFICE_LOCATIONS.map((location) => (
-                        <div key={location.id} className="p-5 lg:p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all group relative overflow-hidden">
+                        <div key={location.id} className="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all group relative overflow-hidden">
+                          {/* ... existing card content ... */}
                           <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-2 truncate">
-                              <MapPin size={18} className="text-indigo-600 shrink-0" />
-                              <span className="font-bold text-slate-800 text-sm lg:text-base truncate">{location.name}</span>
+                            <div className="flex items-center gap-2">
+                              <MapPin size={18} className="text-indigo-600" />
+                              <span className="font-bold text-slate-800">{location.name}</span>
                             </div>
                             <div className={cn(
-                              "px-2 py-0.5 rounded text-[8px] lg:text-[10px] font-bold uppercase shrink-0",
+                              "px-2 py-0.5 rounded text-[10px] font-bold uppercase",
                               location.healthIndex > 80 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
                             )}>
-                              {location.healthIndex}
+                              Index: {location.healthIndex}
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4 mb-4 lg:mb-6">
-                            <div className="space-y-0.5">
-                              <div className="flex items-center gap-1 text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase">
+                          <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase">
                                 <Wind size={12} /> AQI
                               </div>
                               <div className={cn(
-                                "text-lg lg:text-xl font-bold",
+                                "text-xl font-bold",
                                 location.environmentalData.aqi > 200 ? "text-rose-600" : 
                                 location.environmentalData.aqi > 100 ? "text-amber-600" : "text-emerald-600"
                               )}>
                                 {location.environmentalData.aqi}
                               </div>
                             </div>
-                            <div className="space-y-0.5">
-                              <div className="flex items-center gap-1 text-[8px] lg:text-[10px] font-bold text-slate-400 uppercase">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase">
                                 <Thermometer size={12} /> Temp
                               </div>
-                              <div className="text-lg lg:text-xl font-bold text-slate-800">{location.environmentalData.temperature}°C</div>
+                              <div className="text-xl font-bold text-slate-800">{location.environmentalData.temperature}°C</div>
                             </div>
                           </div>
 
